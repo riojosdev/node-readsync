@@ -1,0 +1,21 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(http-equiv="X-UA-Compatible", content="IE=edge")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        title Sign Up
+    body 
+        form(action="/register", method="POST") 
+            label(for="fname") First Name: 
+            input#fname(type="text", name="fname")
+            label(for="lname") Last Name:
+            input#lname(type="text", name="lname")
+            label(for="email") Email: 
+            input#email(type="email", name="email")
+            label(for="mobile") Mobile: 
+            input#mobile(type="number", name="mobile")
+            label(for="dob") Date of Birth:
+            input#dob(type="date", name="dob")
+
+            input(type="submit", value="Submit")
