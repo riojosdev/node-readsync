@@ -25,6 +25,17 @@ async function send() {
     })
     console.log("service worker registered...")
 
+    console.log("fetch publicid")
+    let publicKey
+    await fetch('/getPushId', {
+        method: "POST",
+        headers: {
+            "Authorization": "JWT " + token,
+        }
+    }).then(res => {
+        publicKey = res.body.publicKey
+    })
+
     if (register.installing) {
         console.log("💾Service worker installing");
       } else if (register.waiting) {
@@ -36,7 +47,8 @@ async function send() {
         console.log("Registering Push")
         const subscription = await register.pushManager.subscribe({ 
             userVisibleOnly: true, 
-            applicationServerKey: vapidKeys.publicKey 
+            // applicationServerKey: vapidKeys.publicKey 
+            applicationServerKey: publicKey 
         })
         console.log("push registered...")
     

@@ -4,6 +4,8 @@ html(lang='en')
         meta(charset='utf-8')
         title
     body
+        script(src="./jwt.js") 
+        h1 Sync Em
         ul
             //- TODO: List custom unique usernames
             each i in user
@@ -11,10 +13,11 @@ html(lang='en')
                 form(action="/notify", method="post") 
                     //- !FIXME: from and to id should be different
                     //- TODO: Create login feature
-                    input(type="hidden", name="from_id", value=i.id)
-                    input(type="hidden", name="to_id", value=i.id)
+                    input#from_id(type="hidden", name="from_id", value=i.id)
+                    input#email(type="hidden", name="email", value=email)
+                    input#to_id(type="hidden", name="to_id", value=i.id)
 
                     label(for="message")
-                    input(type="text", name="message")
+                    input#message(type="text", name="message")
 
-                    input(type="submit", value="Submit")
+                    input#submit_btn(type="submit", value="Submit", id="submit_btn")

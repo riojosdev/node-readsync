@@ -4,8 +4,9 @@ html(lang="en")
         meta(charset="UTF-8")
         meta(http-equiv="X-UA-Compatible", content="IE=edge")
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
-        title Sign Up
+        title WELCOME
     body 
+        h2 SIGNUP
         form(action="/register", method="POST") 
             label(for="fname") First Name: 
             input#fname(type="text", name="fname")
@@ -17,5 +18,14 @@ html(lang="en")
             input#mobile(type="number", name="mobile")
             label(for="dob") Date of Birth:
             input#dob(type="date", name="dob")
+
+            input(type="submit", value="Submit")
+
+        h2 LOGIN
+        form(action="/login" method="POST")
+            label(for="email") Email: 
+            input#email(type="text", name="email")  
+            label(for="lname") Last Name: 
+            input#lname(type="text", name="lname")   
 
             input(type="submit", value="Submit")
