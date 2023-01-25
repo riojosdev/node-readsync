@@ -6,6 +6,7 @@ html(lang="en")
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
         title WELCOME
     body 
+        script(src="./jwt.js")
         h2 SIGNUP
         form(action="/register", method="POST") 
             label(for="fname") First Name: 
@@ -22,10 +23,10 @@ html(lang="en")
             input(type="submit", value="Submit")
 
         h2 LOGIN
-        form(action="/login" method="POST")
+        form(id="login", onsubmit="login(event, this)")
             label(for="email") Email: 
-            input#email(type="text", name="email")  
+            input(type="text", name="email", id="email1", value="riojosrj@gmail.com")  
             label(for="lname") Last Name: 
-            input#lname(type="text", name="lname")   
+            input(type="text", name="lname", id="lname1", value="Jos")   
 
             input(type="submit", value="Submit")

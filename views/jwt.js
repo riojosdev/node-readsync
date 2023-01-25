@@ -31,25 +31,66 @@ console.log("requesting jwt header")
 //     });
 //     return response.json(); // parses JSON response into native JavaScript objects
 //   }
-async function jwtEmbededPostRequest() {
-    document.getElementById('submit_btn').onclick = async () => {
-        let fromId = document.querySelector('from_id').value
-        let toId = document.querySelector('to_id').value
-        let email = document.querySelector('email').value
-        let message = document.querySelector('message').value
-
-        await fetch('/notify', {
-            method: 'POST',
-            headers: {
-                "Authorization": "JWT " + token,
-            },
-            body: {
-                fromId,
-                toId,
-                email,
-                message
-            }
-        })
-    }
+// async function onclickJwtEmbededPostRequest(url) {
+window.onload = function startup() {
+    let form = document.getElementById('form1')
+    // form.addEventListener('submit', send(form), true)
 
 }
+async function login(e, forms) {
+
+    // let form = document.getElementById('login')
+    
+    // form.addEventListener('submit', (evt) => {
+    e.preventDefault()
+    //     console.log({evt})
+    // })
+    // let data = new FormData(form)
+    let email = document.getElementById('email1').value
+    let lname = document.getElementById('lname1').value
+
+    // console.log({data})
+    await fetch('/login', {
+        method: "POST",
+        headers: {
+            // "Authorization": "JWT " + token,
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            email,
+            lname
+        })
+    })
+    .then(res => {
+        return res.json()
+    })
+    .then(data => {
+        console.log("🔑: ", {data})
+    })
+    .catch(err => console.error(err))
+}
+    // }
+    // .onclick = async () => {
+    //     let fromId = document.querySelector('from_id').value
+    //     let toId = document.querySelector('to_id').value
+    //     let email = document.querySelector('email').value
+    //     let message = document.querySelector('message').value
+
+        
+
+    //     await fetch(url, {
+    //         method: 'POST',
+    //         headers: {
+    //             "Authorization": "JWT " + token,
+    //         },
+    //         body: {
+    //             fromId,
+    //             toId,
+    //             email,
+    //             message
+    //         }
+    //     })
+    // }
+
+// }

@@ -57,6 +57,7 @@ exports.login = async (req, res, next) => {
         // todo: verify and authenticate
         const query = `
             SELECT * FROM users WHERE email='${data.email}' AND lname='${data.lname}';`
+        console.log({data})
 
         // todo: authorize and grant jwt token
         let user
@@ -102,7 +103,9 @@ exports.login = async (req, res, next) => {
         const headers = {
             'Authorization': 'Bearer ' + token
         };
-        res.set(headers).render('users', { user })
+        console.log({user, token})
+        // res.set(headers).render('users', { user })
+        res.json(token)
     } catch (error) {
         next(error)
     }

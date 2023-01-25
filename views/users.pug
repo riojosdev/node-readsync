@@ -10,7 +10,7 @@ html(lang='en')
             //- TODO: List custom unique usernames
             each i in user
                 li= i.email
-                form(action="/notify", method="post") 
+                form(id="form1", action="/notify", method="post", onsubmit="return send()") 
                     //- !FIXME: from and to id should be different
                     //- TODO: Create login feature
                     input#from_id(type="hidden", name="from_id", value=i.id)
@@ -20,4 +20,4 @@ html(lang='en')
                     label(for="message")
                     input#message(type="text", name="message")
 
-                    input#submit_btn(type="submit", value="Submit", id="submit_btn")
+                    input#submit_btn(type="submit", value="Submit")

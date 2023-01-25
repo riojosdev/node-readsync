@@ -53,4 +53,5 @@ CREATE TABLE messages (
   * Worker displays notification
 ---
 * create client fetch syntax for sending requests using jwt embeded header
-* 
+---
+* How do I access and store jwt token using only client side javascript static requests
