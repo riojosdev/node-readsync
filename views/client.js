@@ -1,3 +1,7 @@
+// // !FIX:
+// const webpush = require('web-push');
+// const vapidKeys = webpush.generateVAPIDKeys();
+
 const publicVapidKey = "BG6g_OGKk7fR2Qhk9tGyqYUIYPbceegJVxoY2Hs6Rzh9kUXxip59IafGqS79JEWgxpPk1fmy3BUJ6OEbVuhxWtU"
 // check for service worker
 if ("serviceWorker" in navigator) {
@@ -32,7 +36,7 @@ async function send() {
         console.log("Registering Push")
         const subscription = await register.pushManager.subscribe({ 
             userVisibleOnly: true, 
-            applicationServerKey: publicVapidKey 
+            applicationServerKey: vapidKeys.publicKey 
         })
         console.log("push registered...")
     

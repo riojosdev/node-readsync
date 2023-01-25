@@ -44,3 +44,13 @@ CREATE TABLE messages (
     status message_status NOT NULL
 );
 ```
+
+# History
+* ...
+* Message saved to server DB
+  * Redirects to a page that executes client.js
+    * Client.js contains code for writing to indexedDB
+  * Worker displays notification
+---
+* create client fetch syntax for sending requests using jwt embeded header
+* 
