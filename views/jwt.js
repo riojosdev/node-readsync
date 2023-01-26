@@ -70,12 +70,13 @@ async function login(e, forms) {
                 console.log("👥: ", {user, email})
 
                 // TODO: render notify-users-input-list
-                for (let index = 0; index < data.length; index++) {
-                    const element = data[index];
+                for (let index = 0; index < user.length; index++) {
+                    const element = user[index];
                     console.log(element)
-                    const div = document.createElement('div')
-                    const username = document.createElement('p').innerHTML = element.email
-                    div.appendChild(username)
+                    const para = document.createElement('p')
+                    para.innerHTML = element.email
+                    const div = document.getElementById('container')
+                    div.appendChild(para)
                     // Create the form element
                     const form = document.createElement('form');
                     
