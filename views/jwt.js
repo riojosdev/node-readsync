@@ -29,7 +29,7 @@ window.onload = function startup() {
 async function login(e, forms) {
 
     // let form = document.getElementById('login')
-    
+
     // form.addEventListener('submit', (evt) => {
     e.preventDefault()
     //     console.log({evt})
@@ -51,26 +51,99 @@ async function login(e, forms) {
             lname
         })
     })
-    .then(res => {
-        return res.json()
-    })
-    .then(data => {
-        const {user, token, email} = data
-        console.log("🔑: ", {data})
-        fetch('/profile', {
-            method: 'POST',
-            headers: {
-                "Authorization": "JWT " + token,
-            },
-            body: JSON.stringify({email, user})
-        }).then(res => {
+        .then(res => {
             return res.json()
-        }).then(data => {
-            console.log("👥: ", {data})
-            // data.forEach(element => {
-                
-            // });
         })
-    })
-    .catch(err => console.error(err))
+        .then(data => {
+            const { user, token, email } = data
+            console.log("🔑: ", { data })
+            fetch('/profile', {
+                method: 'POST',
+                headers: {
+                    "Authorization": "JWT " + token,
+                },
+                body: JSON.stringify({ email, user })
+            }).then(res => {
+                return res.json()
+            }).then(async data => {
+                const { user, email } = data
+                console.log("👥: ", {user, email})
+
+                // TODO: render notify-users-input-list
+                for (let index = 0; index < data.length; index++) {
+                    const element = data[index];
+                    console.log(element)
+                    const div = document.createElement('div')
+                    const username = document.createElement('p').innerHTML = element.email
+                    div.appendChild(username)
+                    // Create the form element
+                    const form = document.createElement('form');
+                    
+                    // !FIXME: hidden elements
+                    // Create the fromId hidden input field
+                    // const fromIdLabel = document.createElement('label');
+                    // fromIdLabel.innerHTML = 'From:';
+                    const fromIdInput = document.createElement('input');
+                    fromIdInput.setAttribute('type', 'hidden');
+                    fromIdInput.setAttribute('name', 'from_id');
+                    fromIdInput.setAttribute('value', element.id);
+                    // Create the email hidden input field
+                    // const emailLabel = document.createElement('label');
+                    // emailLabel.innerHTML = 'Email:';
+                    const emailInput = document.createElement('input');
+                    emailInput.setAttribute('type', 'hidden');
+                    emailInput.setAttribute('name', 'email');
+                    emailInput.setAttribute('value', element.email);
+                    // Create the toId hidden input field
+                    // const toIdLabel = document.createElement('label');
+                    // toIdLabel.innerHTML = 'To:';
+                    const toIdInput = document.createElement('input');
+                    toIdInput.setAttribute('type', 'hidden');
+                    toIdInput.setAttribute('name', 'to_id');
+                    toIdInput.setAttribute('value', element.id);
+
+                    // Create the message input field
+                    const messageLabel = document.createElement('label');
+                    messageLabel.innerHTML = 'Message:';
+                    const messageInput = document.createElement('textarea');
+                    messageInput.setAttribute('name', 'message');
+                    messageInput.setAttribute('required', true);
+
+                    // Create the submit button
+                    const submitButton = document.createElement('input');
+                    submitButton.setAttribute('type', 'submit');
+                    submitButton.setAttribute('value', 'Submit');
+
+                    // Append the input fields and submit button to the form
+                    form.appendChild(fromIdInput);
+                    form.appendChild(emailInput);
+                    form.appendChild(toIdInput);
+                    form.appendChild(messageLabel);
+                    form.appendChild(messageInput);
+                    form.appendChild(submitButton);
+
+                    // Add a submit event listener to the form
+                    form.addEventListener('submit', event => {
+                        event.preventDefault();
+                        const to_id = toIdInput.value;
+                        const message = messageInput.value;
+
+                        fetch('notify', {
+                            method: 'POST',
+                            headers: {
+                                "Authorization": "JWT " + token,
+                            },
+                            body: JSON.stringify({ to_id, message })
+                        })
+                        console.log(`to_id: ${to_id}, Message: ${message}`);
+                    });
+
+                    // Append the form to the body
+                    div.appendChild(form)
+                    document.body.appendChild(div);
+
+                }
+            })
+        })
+        .catch(err => console.error(err))
 }

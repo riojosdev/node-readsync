@@ -11,26 +11,16 @@ exports.getUser = async (req, res, next) => {
     
     let user
     // !FIXME: reveal only connected-friend-users in personal network
-    const query = `SELECT * FROM users WHERE email='${email}';`
+    // const query = `SELECT * FROM users WHERE email='${email}';`
+    const query = `SELECT * FROM users;`
     await client.query(query)
         .then(res => {
-          user = res.rows[0]
-          console.log(user)
+          // user = res.rows
+          return res.rows
         })
-        .finally(() => {
-          // console.log({user, email})
-            // if (!user) throw creatError.NotFound()
-        
-            // creating user as json
-            // const userDataObj = JSON.parse(user)
-        
-            // // remove the password key before sending it to client
-            // delete userDataObj.password
-        
-            // res.status(200).send(userDataObj)
-            // res.render('users', { user, email })
-            // res.json({user, email})
-            res.json(JSON.stringify(user, email))
+        .then(data => {
+          console.log(data)
+          res.status(200).json({user: data, email})
         })
 
   } catch (error) {
