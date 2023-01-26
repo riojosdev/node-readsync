@@ -61,21 +61,24 @@ exports.login = async (req, res, next) => {
         console.log({data})
 
         // todo: authorize and grant jwt token
-        let user
+        let output
         await client.query(query)
             .then(async res => {
                 console.log(`✅: ${res}`);
-                const userData = Promise.resolve(res.rows[0])
+                const userData = res.rows[0]
                 user = userData
                 if (!userData) throw creatError.NotFound()
-                const { id, lname, email, publicid } = res.rows[0]
-                console.log({id, lname, email, publicid})
+                // const { id, lname, email, publicid } = res.rows[0]
+                const { fname, lname, email, dob, privateid, publicid, mobile, id } = res.rows[0]
+                // console.log({id, lname, email, publicid})
 
                 if (!(id)) throw creatError.Unauthorized()
 
                 token = await tokenHandler({ id, lname, email, publicid })
                 
-                // res.send(token);
+                // res.send(token);\
+                const object = {fname, lname, email, dob, privateid, publicid, mobile, id, token}
+                output = {user: object, token: token, email}
             })
             .catch(err => {
                 console.error(`❌: ${err}`);
@@ -90,12 +93,12 @@ exports.login = async (req, res, next) => {
 
         // const token = await tokenHandler({ id, username, email })
         // Add the token to the header
-        const headers = {
-            'Authorization': 'Bearer ' + token
-        };
-        console.log({user, token, email})
+        // const headers = {
+        //     'Authorization': 'Bearer ' + token
+        // };
+        // console.log({user: user, token, email})
         // res.render('users', { user, email })
-        res.json({user, token, email})
+        res.json(output)
     } catch (error) {
         next(error)
     }

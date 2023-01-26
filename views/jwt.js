@@ -54,15 +54,17 @@ async function login(e, forms) {
         .then(res => {
             return res.json()
         })
-        .then(data => {
+        .then(async data => {
             const { user, token, email } = data
-            console.log("🔑: ", { data })
-            fetch('/profile', {
+            console.log("🔑: ", { data }, user)
+            await fetch('/profile', {
                 method: 'POST',
                 headers: {
+                    // 'Accept': 'application/json',
+                    'Content-Type': 'application/json',
                     "Authorization": "JWT " + token,
                 },
-                body: JSON.stringify({ email, user })
+                body: JSON.stringify({email, user: user})
             }).then(res => {
                 return res.json()
             }).then(async data => {
@@ -73,10 +75,10 @@ async function login(e, forms) {
                 for (let index = 0; index < user.length; index++) {
                     const element = user[index];
                     console.log(element)
-                    const para = document.createElement('p')
-                    para.innerHTML = element.email
+                    // const para = document.createElement('p')
+                    // para.innerHTML = element.email
                     const div = document.getElementById('container')
-                    div.appendChild(para)
+                    // div.appendChild(para)
                     // Create the form element
                     const form = document.createElement('form');
                     
@@ -104,10 +106,12 @@ async function login(e, forms) {
                     toIdInput.setAttribute('value', element.id);
 
                     // Create the message input field
-                    const messageLabel = document.createElement('label');
-                    messageLabel.innerHTML = 'Message:';
-                    const messageInput = document.createElement('textarea');
+                    // const messageLabel = document.createElement('label');
+                    // messageLabel.innerHTML = 'Message:';
+                    const messageInput = document.createElement('input');
                     messageInput.setAttribute('name', 'message');
+                    messageInput.setAttribute('placeholder', element.email);
+                    messageInput.setAttribute('type', 'text');
                     messageInput.setAttribute('required', true);
 
                     // Create the submit button
@@ -119,17 +123,17 @@ async function login(e, forms) {
                     form.appendChild(fromIdInput);
                     form.appendChild(emailInput);
                     form.appendChild(toIdInput);
-                    form.appendChild(messageLabel);
+                    // form.appendChild(messageLabel);
                     form.appendChild(messageInput);
                     form.appendChild(submitButton);
 
                     // Add a submit event listener to the form
-                    form.addEventListener('submit', event => {
+                    form.addEventListener('submit', async event => {
                         event.preventDefault();
                         const to_id = toIdInput.value;
                         const message = messageInput.value;
 
-                        fetch('notify', {
+                        await fetch('notify', {
                             method: 'POST',
                             headers: {
                                 "Authorization": "JWT " + token,
