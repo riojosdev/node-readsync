@@ -14,6 +14,7 @@ exports.getUser = async (req, res, next) => {
     // let user
     // !FIXME: reveal only connected-friend-users in personal network
     // const query = `SELECT * FROM users WHERE email='${email}';`
+    // const query = `SELECT * FROM users WHERE id='${user.id}';`
     const query = `SELECT * FROM users;`
     await client.query(query)
         .then(res => {

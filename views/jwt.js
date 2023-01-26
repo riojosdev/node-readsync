@@ -132,10 +132,11 @@ async function login(e, forms) {
                         event.preventDefault();
                         const to_id = toIdInput.value;
                         const message = messageInput.value;
-
+                        console.log({to_id, message})
                         await fetch('notify', {
                             method: 'POST',
                             headers: {
+                                'Content-Type': 'application/json',
                                 "Authorization": "JWT " + token,
                             },
                             body: JSON.stringify({ to_id, message })
