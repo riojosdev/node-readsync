@@ -1,25 +1,5 @@
 console.log("requesting jwt header")
 
-// // Example POST method implementation:
-// // async function postData(url = '', data = {}) {
-// async function postData(url = '/authorize') {
-//     // Default options are marked with *
-//     const response = await fetch(url, {
-//       method: 'POST', // *GET, POST, PUT, DELETE, etc.
-//     //   mode: 'cors', // no-cors, *cors, same-origin
-//     //   cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-//     //   credentials: 'same-origin', // include, *same-origin, omit
-//       headers: {
-//         // 'Content-Type': 'application/json'
-//         // 'Content-Type': 'application/x-www-form-urlencoded',
-//         "Authorization": "JWT " + token,
-//       },
-//     //   redirect: 'follow', // manual, *follow, error
-//     //   referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-//     //   body: JSON.stringify(data) // body data type must match "Content-Type" header
-//     });
-//     return response.json(); // parses JSON response into native JavaScript objects
-//   }
 // async function onclickJwtEmbededPostRequest(url) {
 window.onload = function startup() {
     let form = document.getElementById('form1')
@@ -37,6 +17,7 @@ async function login(e, forms) {
     // let data = new FormData(form)
     let email = document.getElementById('email1').value
     let lname = document.getElementById('lname1').value
+    let user_data
 
     // console.log({data})
     await fetch('/login', {
@@ -57,6 +38,14 @@ async function login(e, forms) {
         .then(async data => {
             const { user, token, email } = data
             console.log("🔑: ", { data }, user)
+            user_data = {publicid: user.publicid, id: user.id, privateid: user.privateid}
+
+            // TODO: render sync button which updates service worker
+            let button = document.createElement('button')
+            button.innerHTML = 'Sync New Notifications'
+
+            button.addEventListener('click', worker(token, user_data))
+
             await fetch('/profile', {
                 method: 'POST',
                 headers: {
@@ -152,4 +141,49 @@ async function login(e, forms) {
             })
         })
         .catch(err => console.error(err))
+}
+
+async function worker(token, data) {
+    // Register Service Worker
+    console.log("registering service worker...", {data})
+    const register = await navigator.serviceWorker.register("./worker.js", {
+        scope: "/"
+    })
+    console.log("service worker registered...")
+
+    console.log("fetch publicid")
+    // !FIXME: get only the push sync requested user
+    const {publicid, id, privateid} = data
+
+    if (register.installing) {
+        console.log("💾Service worker installing");
+      } else if (register.waiting) {
+        console.log("👾Service worker installed");
+      } else if (register.active) {
+        console.log("🤖Service worker active");
+      }
+        
+        // Register Push
+        console.log("Registering Push")
+        const subscription = await register.pushManager.subscribe({ 
+            userVisibleOnly: true, 
+            // applicationServerKey: vapidKeys.publicKey 
+            applicationServerKey: publicid 
+        })
+        console.log("push registered...")
+    
+        // Send Push Notification
+        console.log("Sending Push...")
+        await fetch('/subscribe', {
+            method: "POST",
+            body: JSON.stringify({ subscription, user_id: id, publicKey: publicid, privateKey: privateid }),
+            headers: {
+                'content-type': 'application/json',
+                "Authorization": "JWT " + token,
+            }
+        })
+        console.log("Push Sent...")
+
+        // console.log("################")
+        // send().catch(err => console.log(err))
 }

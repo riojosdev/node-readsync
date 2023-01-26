@@ -38,9 +38,9 @@ exports.register = async (req, res, next) => {
             .catch(err => {
                 console.error(`❌: ${err}`);
             })
-            .finally(() => {
-                client.end();
-            })
+            // .finally(() => {
+            //     client.end();
+            // })
 
         res.status(201)
         res.send('Account created successfully')
@@ -78,7 +78,7 @@ exports.login = async (req, res, next) => {
                 
                 // res.send(token);\
                 const object = {fname, lname, email, dob, privateid, publicid, mobile, id, token}
-                output = {user: object, token: token, email}
+                output = {user: object, token, email}
             })
             .catch(err => {
                 console.error(`❌: ${err}`);

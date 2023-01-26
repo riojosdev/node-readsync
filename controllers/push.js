@@ -1,9 +1,10 @@
 const creatError = require('http-errors')
 const client = require('../utils/db')
+const webpush = require('web-push')
 
 exports.syncPush = async (req, res, next) => {
     try {
-        const {to_id, message }= req.body
+        const { to_id, message } = req.body
         const { email } = req.payload
 
         if (!email) throw creatError.Unauthorized()
@@ -57,6 +58,69 @@ exports.syncPush = async (req, res, next) => {
         // res.send("SYNCED message to SERVER")
         res.render('worker')
 
+    } catch (error) {
+        next(error)
+    }
+}
+
+exports.deliverPush = async (req, res, next) => {
+    try {
+        // get pushSubscription object
+        const {subscription, user_id, publicKey, privateKey} = req.body
+        console.log({ subscription, user_id })
+
+        // send 201 - resource created
+        res.status(201).json({})
+
+        // let user_id = 1
+
+        // create payload
+        let payload_test
+        const query = `
+    SELECT * FROM messages WHERE sender=${user_id} OR receiver=${user_id};`
+        await client.query(query)
+            .then(res => {
+                payload_test = res.rows
+                console.log({payload_test})
+                // const query2 = `SELECT fname, lname FROM users WHERE id IN '${payload_test.sender}'`
+                // client.query(query2)
+                //     .then(res => {
+                //         return res.rows
+                //     })
+            })
+            .catch(err => console.error('❌: ', err))
+
+        webpush.setVapidDetails(
+            'mailto:example@yourdomain.org',
+            publicKey,
+            privateKey
+            );
+
+        // get each message sender details
+        // send to service worker to display as push notification
+        for (let index = 0; index < payload_test.length; index++) {
+            const message = payload_test[index];
+            // fetch public vapid key
+            let sender
+            const key_query = `SELECT fname FROM users WHERE id=${message.sender}`
+            await client.query(key_query)
+                .then(async res => {
+                    sender = res.rows
+                    console.log({sender})
+
+                    const payload = JSON.stringify({ title: JSON.stringify(sender, message.message), body: JSON.stringify(message.message) })
+
+                    console.log(payload)
+                    
+                    await webpush.sendNotification(subscription, payload).catch(err => console.error("🦀🤖✅✅: ",err))
+                })
+
+            
+        }
+
+        
+
+        // pass object into sendNotification
     } catch (error) {
         next(error)
     }
