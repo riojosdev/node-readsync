@@ -1,15 +1,4 @@
 console.log("requesting jwt header")
-// let token
-// // self.addEventListener("fetch", )
-// fetch('/authorize', {
-//     method: "POST",
-//     headers: {
-//         "Authorization": "JWT " + token,
-//     }
-// }).then(res => {
-//     token = Promise.resolve(res.headers)
-//     console.log(token)
-// })
 
 // // Example POST method implementation:
 // // async function postData(url = '', data = {}) {
@@ -66,31 +55,22 @@ async function login(e, forms) {
         return res.json()
     })
     .then(data => {
+        const {user, token, email} = data
         console.log("🔑: ", {data})
+        fetch('/profile', {
+            method: 'POST',
+            headers: {
+                "Authorization": "JWT " + token,
+            },
+            body: JSON.stringify({email, user})
+        }).then(res => {
+            return res.json()
+        }).then(data => {
+            console.log("👥: ", {data})
+            // data.forEach(element => {
+                
+            // });
+        })
     })
     .catch(err => console.error(err))
 }
-    // }
-    // .onclick = async () => {
-    //     let fromId = document.querySelector('from_id').value
-    //     let toId = document.querySelector('to_id').value
-    //     let email = document.querySelector('email').value
-    //     let message = document.querySelector('message').value
-
-        
-
-    //     await fetch(url, {
-    //         method: 'POST',
-    //         headers: {
-    //             "Authorization": "JWT " + token,
-    //         },
-    //         body: {
-    //             fromId,
-    //             toId,
-    //             email,
-    //             message
-    //         }
-    //     })
-    // }
-
-// }

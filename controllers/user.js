@@ -1,19 +1,24 @@
 const creatError = require('http-errors')
-// const JSONdb = require('simple-json-db')
-// const db = new JSONdb(process.env.JSON_DB_PATH, { asyncWrite: true })
+const client = require('../utils/db')
+
 exports.getUser = async (req, res, next) => {
   try {
+    console.log("🦀🦀🦀: ", req.payload)
     // checking for any error occurance
     const { email } = req.payload
+
     if (!email) throw creatError.Unauthorized()
     
-    // const userData = db.get(email)
     let user
     // !FIXME: reveal only connected-friend-users in personal network
-    const query = `SELECT * FROM users WHERE email=${email};`
-    client.query(query)
-        .then(res => user = res.rows[0])
+    const query = `SELECT * FROM users WHERE email='${email}';`
+    await client.query(query)
+        .then(res => {
+          user = res.rows[0]
+          console.log(user)
+        })
         .finally(() => {
+          // console.log({user, email})
             // if (!user) throw creatError.NotFound()
         
             // creating user as json
@@ -23,7 +28,9 @@ exports.getUser = async (req, res, next) => {
             // delete userDataObj.password
         
             // res.status(200).send(userDataObj)
-            res.render('users', { user, email })
+            // res.render('users', { user, email })
+            // res.json({user, email})
+            res.json(JSON.stringify(user, email))
         })
 
   } catch (error) {

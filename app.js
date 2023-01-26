@@ -19,7 +19,7 @@ app.set('view engine', 'pug')
 app.use(express.static('views'));
 
 app.use('/', authRoutes)
-app.use('/sync', userRoutes)
+app.use('/', userRoutes)
 
 // error handling
 app.use((err, req, res, next) => {

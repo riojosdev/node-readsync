@@ -6,6 +6,7 @@ const { verifyJwtToken } = require('../utils/jwt')
 module.exports = {
   accessTokenValidator: async (req, res, next) => {
     try {
+      console.log("🍃🍃🍃: ")
       let token = _getKeyValue(req.headers, 'authorization', null)
 
       if (!token) throw creatError.Unauthorized()

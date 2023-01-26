@@ -1,0 +1,13 @@
+each i in user
+    li= i.email
+    form(id="form1", action="/notify", method="post", onsubmit="return send()") 
+        //- !FIXME: from and to id should be different
+        //- TODO: Create login feature
+        input#from_id(type="hidden", name="from_id", value=i.id)
+        input#email(type="hidden", name="email", value=email)
+        input#to_id(type="hidden", name="to_id", value=i.id)
+
+        label(for="message")
+        input#message(type="text", name="message")
+
+        input#submit_btn(type="submit", value="Submit")

@@ -53,6 +53,7 @@ exports.register = async (req, res, next) => {
 exports.login = async (req, res, next) => {
     try {
         const data = req.body
+        const email = data.email
         let token
         // todo: verify and authenticate
         const query = `
@@ -73,17 +74,6 @@ exports.login = async (req, res, next) => {
                 if (!(id)) throw creatError.Unauthorized()
 
                 token = await tokenHandler({ id, lname, email, publicid })
-                // console.log({token})
-
-                // let jwtSecretKey = process.env.JWT_SECRET_KEY;
-                // let data = {
-                //     time: Date(),
-                //     // !FIXME: Dont use public VAPID key create alternate ways such as bcrypt hash/uuid to identify user...
-                //     userId: res.rows[0].publicid,
-                // }
-                
-                // // token = jwt.sign(data, jwtSecretKey);
-                // // token = await tokenHandler({});
                 
                 // res.send(token);
             })
@@ -103,9 +93,9 @@ exports.login = async (req, res, next) => {
         const headers = {
             'Authorization': 'Bearer ' + token
         };
-        console.log({user, token})
-        // res.set(headers).render('users', { user })
-        res.json(token)
+        console.log({user, token, email})
+        // res.render('users', { user, email })
+        res.json({user, token, email})
     } catch (error) {
         next(error)
     }

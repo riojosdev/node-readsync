@@ -6,8 +6,7 @@ const { syncPush } = require('../controllers/push')
 const { accessTokenValidator } = require('../middlewares/auth')
 
 // accessToken validator middleware
-
-router.get(
+router.post(
     '/profile', 
     accessTokenValidator, 
     getUser
