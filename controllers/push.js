@@ -2,7 +2,7 @@ const creatError = require('http-errors')
 const client = require('../utils/db')
 const webpush = require('web-push')
 
-exports.syncPush = async (req, res, next) => {
+exports.syncNotifications = async (req, res, next) => {
     try {
         const { to_id, message } = req.body
         const { email } = req.payload
@@ -66,7 +66,7 @@ exports.syncPush = async (req, res, next) => {
 exports.deliverPush = async (req, res, next) => {
     try {
         // get pushSubscription object
-        const {subscription, user_id, publicKey, privateKey} = req.body
+        const { subscription, user_id, publicKey, privateKey } = req.body
         console.log({ subscription, user_id })
 
         // send 201 - resource created
@@ -81,7 +81,7 @@ exports.deliverPush = async (req, res, next) => {
         await client.query(query)
             .then(res => {
                 payload_test = res.rows
-                console.log({payload_test})
+                console.log({ payload_test })
                 // !FIXME: find better and efficient way to run this code, without using loops
                 payload_test.forEach(async element => {
                     const query2 = `UPDATE messages SET status='delivered' WHERE id='${element.id}';`
@@ -98,7 +98,7 @@ exports.deliverPush = async (req, res, next) => {
             'mailto:example@yourdomain.org',
             publicKey,
             privateKey
-            );
+        );
 
         // get each message sender details
         // send to service worker to display as push notification
@@ -110,19 +110,19 @@ exports.deliverPush = async (req, res, next) => {
             await client.query(key_query)
                 .then(async res => {
                     sender = res.rows
-                    console.log({sender})
+                    console.log({ sender })
 
                     const payload = JSON.stringify({ title: JSON.stringify(sender, message.message), body: JSON.stringify(message.message) })
 
                     console.log(payload)
-                    
-                    await webpush.sendNotification(subscription, payload).catch(err => console.error("🦀🤖✅✅: ",err))
+
+                    await webpush.sendNotification(subscription, payload).catch(err => console.error("🦀🤖✅✅: ", err))
                 })
 
-            
+
         }
 
-        
+
 
         // pass object into sendNotification
     } catch (error) {

@@ -1,11 +1,10 @@
 // const { v4: uuid } = require('uuid')
 const creatError = require('http-errors')
 const client = require('../utils/db')
-const webpush = require('web-push');
+const webpush = require('web-push')
 const { signJwtToken } = require('../utils/jwt')
-/**
- * Access token delivery handler
- */
+
+// Access token delivery handler
 const tokenHandler = async (user) => {
     try {
         // generate token
@@ -38,9 +37,9 @@ exports.register = async (req, res, next) => {
             .catch(err => {
                 console.error(`❌: ${err}`);
             })
-            // .finally(() => {
-            //     client.end();
-            // })
+        // .finally(() => {
+        //     client.end();
+        // })
 
         res.status(201)
         res.send('Account created successfully')
@@ -58,7 +57,7 @@ exports.login = async (req, res, next) => {
         // todo: verify and authenticate
         const query = `
             SELECT * FROM users WHERE email='${data.email}' AND lname='${data.lname}';`
-        console.log({data})
+        console.log({ data })
 
         // todo: authorize and grant jwt token
         let output
@@ -75,10 +74,10 @@ exports.login = async (req, res, next) => {
                 if (!(id)) throw creatError.Unauthorized()
 
                 token = await tokenHandler({ id, lname, email, publicid })
-                
+
                 // res.send(token);\
-                const object = {fname, lname, email, dob, privateid, publicid, mobile, id, token}
-                output = {user: object, token, email}
+                const object = { fname, lname, email, dob, privateid, publicid, mobile, id, token }
+                output = { user: object, token, email }
             })
             .catch(err => {
                 console.error(`❌: ${err}`);

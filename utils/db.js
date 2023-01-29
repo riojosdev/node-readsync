@@ -1,15 +1,18 @@
-const { Client } = require('pg');
+const { Client } = require('pg')
+const dotenv = require('dotenv')
+
+dotenv.config()
 
 const client = new Client({
-    user: 'postgres',
-    host: 'localhost',
-    database: 'sw_botnet',
-    password: 'password',
-    port: '5432',
+    user: process.env.DB_USER,
+    host: process.env.DB_HOST,
+    database: process.env.DB_NAME,
+    password: process.env.DB_PASS,
+    port: process.env.DB_PORT,
 })
 client
-  .connect()
-  .then(() => console.log('connected'))
-  .catch((err) => console.error('connection error', err.stack))
+    .connect()
+    .then(() => console.log('connected'))
+    .catch((err) => console.error('connection error', err.stack))
 
 module.exports = client

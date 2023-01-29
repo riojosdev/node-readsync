@@ -1,0 +1,6 @@
+Feature, "Status (todo, doing, done)", Comments, Description
+OpenAPI, todo, Need to learn specification
+Docker, todo,
+Initialize an ORM Model for user & notification, todo,, Use an ORM to build & initialize a model for the tables and objects used by the database
+Change login to use username and password, todo,, Encrypt the password and store in DB
+Use free cloud hosting, todo, render.com is one alternatives, Find heroku alternatives 

@@ -38,7 +38,7 @@ async function login(e, forms) {
         .then(async data => {
             const { user, token, email } = data
             console.log("🔑: ", { data }, user)
-            user_data = {publicid: user.publicid, id: user.id, privateid: user.privateid}
+            user_data = { publicid: user.publicid, id: user.id, privateid: user.privateid }
 
             // TODO: render sync button which updates service worker
             let button = document.createElement('button')
@@ -53,12 +53,12 @@ async function login(e, forms) {
                     'Content-Type': 'application/json',
                     "Authorization": "JWT " + token,
                 },
-                body: JSON.stringify({email, user: user})
+                body: JSON.stringify({ email, user: user })
             }).then(res => {
                 return res.json()
             }).then(async data => {
                 const { user, email } = data
-                console.log("👥: ", {user, email})
+                console.log("👥: ", { user, email })
 
                 // TODO: render notify-users-input-list
                 for (let index = 0; index < user.length; index++) {
@@ -70,7 +70,7 @@ async function login(e, forms) {
                     // div.appendChild(para)
                     // Create the form element
                     const form = document.createElement('form');
-                    
+
                     // !FIXME: hidden elements
                     // Create the fromId hidden input field
                     // const fromIdLabel = document.createElement('label');
@@ -121,7 +121,7 @@ async function login(e, forms) {
                         event.preventDefault();
                         const to_id = toIdInput.value;
                         const message = messageInput.value;
-                        console.log({to_id, message, token})
+                        console.log({ to_id, message, token })
                         await fetch('/notify', {
                             method: 'POST',
                             headers: {
@@ -145,7 +145,7 @@ async function login(e, forms) {
 
 async function worker(token, data) {
     // Register Service Worker
-    console.log("registering service worker...", {data})
+    console.log("registering service worker...", { data })
     const register = await navigator.serviceWorker.register("./worker.js", {
         scope: "/"
     })
@@ -153,37 +153,37 @@ async function worker(token, data) {
 
     console.log("fetch publicid")
     // !FIXME: get only the push sync requested user
-    const {publicid, id, privateid} = data
+    const { publicid, id, privateid } = data
 
     if (register.installing) {
         console.log("💾Service worker installing");
-      } else if (register.waiting) {
+    } else if (register.waiting) {
         console.log("👾Service worker installed");
-      } else if (register.active) {
+    } else if (register.active) {
         console.log("🤖Service worker active");
-      }
-        
-        // Register Push
-        console.log("Registering Push")
-        const subscription = await register.pushManager.subscribe({ 
-            userVisibleOnly: true, 
-            // applicationServerKey: vapidKeys.publicKey 
-            applicationServerKey: publicid 
-        })
-        console.log("push registered...")
-    
-        // Send Push Notification
-        console.log("Sending Push...")
-        await fetch('/subscribe', {
-            method: "POST",
-            body: JSON.stringify({ subscription, user_id: id, publicKey: publicid, privateKey: privateid }),
-            headers: {
-                'content-type': 'application/json',
-                "Authorization": "JWT " + token,
-            }
-        })
-        console.log("Push Sent...")
+    }
 
-        // console.log("################")
-        // send().catch(err => console.log(err))
+    // Register Push
+    console.log("Registering Push")
+    const subscription = await register.pushManager.subscribe({
+        userVisibleOnly: true,
+        // applicationServerKey: vapidKeys.publicKey 
+        applicationServerKey: publicid
+    })
+    console.log("push registered...")
+
+    // Send Push Notification
+    console.log("Sending Push...")
+    await fetch('/push', {
+        method: "POST",
+        body: JSON.stringify({ subscription, user_id: id, publicKey: publicid, privateKey: privateid }),
+        headers: {
+            'content-type': 'application/json',
+            "Authorization": "JWT " + token,
+        }
+    })
+    console.log("Push Sent...")
+
+    // console.log("################")
+    // send().catch(err => console.log(err))
 }

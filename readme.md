@@ -3,9 +3,24 @@
 
 A minimalistic & lightweight notification system, built using Service Workers and NodeJS.
 
-The system is built using a server-client architecture that uses the client browser's service workers to push and receive notifications from a NodeJS server. The system is able to work on most of the devices which supports the modern browser. 
+The system is built using a server-client architecture that uses the client browser's service workers to push and receive notifications from a NodeJS REST API server. The system is able to work on most of the devices with modern browsers which supports Service Workers. 
 
 Each platforms have a different UI design to represent notifications, so the user experience might differ across different platforms. Customizing options would be supported in the future to enable better user accessibility.
+
+The service worker is the main dependency needed for push notifications to work. As it is still a new feature in most browsers, there might be breaking changes.
+
+## Getting started
+To get started, clone and cd the repo:
+
+`$ git clone https://github.com/riojosdev/node-readsync.git && cd node-readsync`
+
+Install all dependencies with NPM:
+
+`$ npm install`
+
+Start the server with:
+
+`$ node app.js`
 
 ## Server Routes
 |Route|Description|
@@ -23,12 +38,20 @@ Each platforms have a different UI design to represent notifications, so the use
 |-|-|
 | Only a succesful Login installs a new Service Worker, which contains new notifications for the client user | If service worker couldn't be installed; no notifications would be received or pushed, a reload often works; which means the user have to successfully login with a minimum of two times, more if error persists |
 
+## FAQ
+### I added permission for the site to receive notification, but still received no notification. What did I do wrong?
+Some browsers might have disabled notifications support for websites. You may need to manually enable it.
+
+Also remember, the service worker is the main dependency needed for push notifications to work. As it is still a new feature in most browsers, there might be issues.
 
 ## Contribution Guidelines to Follow
 * Build in Public
 * MVC
 * Humane and ethical tech architecture
 * Unix Philosophy
+
+## License
+Please check the LICENSE.md file
 
 ---
 # Give Up GitHub
