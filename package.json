@@ -1,14 +1,14 @@
 {
-  "name": "generate-vapid-save-to-db",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "ReadSync",
+  "version": "0.0.1",
+  "description": "A minimalistic & lightweight notification system, built using Service Workers and NodeJS",
+  "main": "app.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "node app.js",
     "dev": "nodemon app.js"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": ["Notification", "Service Worker"],
+  "author": "Rio Jos <www.riojos.in>",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.20.1",
@@ -17,10 +17,12 @@
     "http-errors": "^2.0.0",
     "jsonwebtoken": "^9.0.0",
     "lodash": "^4.17.21",
-    "nodemon": "^2.0.20",
     "pg": "^8.8.0",
     "pug": "^3.0.2",
     "uuid": "^9.0.0",
     "web-push": "^3.5.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
   }
 }
