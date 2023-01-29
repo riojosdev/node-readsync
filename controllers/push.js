@@ -77,12 +77,16 @@ exports.deliverPush = async (req, res, next) => {
         // create payload
         let payload_test
         const query = `
-    SELECT * FROM messages WHERE sender=${user_id} OR receiver=${user_id};`
+    SELECT * FROM messages WHERE (sender=${user_id} OR receiver=${user_id}) AND status='synced';`
         await client.query(query)
             .then(res => {
                 payload_test = res.rows
                 console.log({payload_test})
-                // const query2 = `SELECT fname, lname FROM users WHERE id IN '${payload_test.sender}'`
+                // !FIXME: find better and efficient way to run this code, without using loops
+                payload_test.forEach(async element => {
+                    const query2 = `UPDATE messages SET status='delivered' WHERE id='${element.id}';`
+                    await client.query(query2);
+                });
                 // client.query(query2)
                 //     .then(res => {
                 //         return res.rows
