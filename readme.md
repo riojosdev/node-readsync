@@ -1,6 +1,9 @@
-# ReadSync 🔔 v0.0.1
 <a href='https://ind.ie/ethical-design'><img style='margin-left: auto; margin-right: auto;' alt='We practice Ethical Design' src='https://img.shields.io/badge/Ethical_Design-_▲_❤_-blue.svg'></a>
+[![Twitter Follow](https://img.shields.io/twitter/follow/htmldecoder?style=social)](https://twitter.com/htmldecoder)
+# ReadSync 🔔 v0.0.1
 
+
+## About
 A minimalistic & lightweight notification system, built using Service Workers and NodeJS.
 
 The system is built using a server-client architecture that uses the client browser's service workers to push and receive notifications from a NodeJS REST API server. The system is able to work on most of the devices with modern browsers which supports Service Workers. 
@@ -10,18 +13,14 @@ Each platforms have a different UI design to represent notifications, so the use
 The service worker is the main dependency needed for push notifications to work. As it is still a new feature in most browsers, there might be breaking changes.
 
 ## Getting started
-To get started, clone and cd the repo:
-
-`$ git clone https://github.com/riojosdev/node-readsync.git && cd node-readsync`
-
-Install all dependencies with NPM:
-
-`$ npm install`
-
-Start the server with:
-
-`$ node app.js`
-
+```bash
+# To get started, clone and cd the repo:
+git clone <readsync_git_url> && cd node-readsync
+# Install all dependencies with NPM: 
+npm install
+# Start the server with:
+node app.js
+```
 ## Server Routes
 |Route|Description|
 |-|-|

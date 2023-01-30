@@ -5,10 +5,14 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "dev": "nodemon app.js"
+    "dev": "nodemon app.js",
+    "lint": "npx eslint ./ --fix"
   },
-  "keywords": ["Notification", "Service Worker"],
-  "author": "Rio Jos <www.riojos.in>",
+  "keywords": [
+    "Notification",
+    "Service Worker"
+  ],
+  "author": "<www.decodedHTML.com>",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.20.1",
@@ -23,6 +27,7 @@
     "web-push": "^3.5.0"
   },
   "devDependencies": {
+    "eslint": "^8.33.0",
     "nodemon": "^2.0.20"
   }
 }
