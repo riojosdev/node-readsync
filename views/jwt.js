@@ -1,3 +1,6 @@
+/* eslint-disable no-unused-vars */
+
+// ... your code here with unused vars...
 console.log('requesting jwt header')
 
 // async function onclickJwtEmbededPostRequest(url) {
@@ -38,7 +41,7 @@ async function login(e, forms) {
 		.then(async data => {
 			const { user, token, email } = data
 			console.log('🔑: ', { data }, user)
-			user_data = { publicid: user.publicid, id: user.id, privateid: user.privateid }
+			user_data = { publicId: user.publicID, id: user.id, privateId: user.privateID }
 
 			// TODO: render sync button which updates service worker
 			let button = document.createElement('button')
@@ -153,7 +156,7 @@ async function worker(token, data) {
 
 	console.log('fetch publicid')
 	// !FIXME: get only the push sync requested user
-	const { publicid, id, privateid } = data
+	const { publicId, id, privateId } = data
 
 	if (register.installing) {
 		console.log('💾Service worker installing')
@@ -168,7 +171,7 @@ async function worker(token, data) {
 	const subscription = await register.pushManager.subscribe({
 		userVisibleOnly: true,
 		// applicationServerKey: vapidKeys.publicKey 
-		applicationServerKey: publicid
+		applicationServerKey: publicId
 	})
 	console.log('push registered...')
 
@@ -176,7 +179,7 @@ async function worker(token, data) {
 	console.log('Sending Push...')
 	await fetch('/push', {
 		method: 'POST',
-		body: JSON.stringify({ subscription, user_id: id, publicKey: publicid, privateKey: privateid }),
+		body: JSON.stringify({ subscription, user_id: id, publicKey: publicId, privateKey: privateId }),
 		headers: {
 			'content-type': 'application/json',
 			'Authorization': 'JWT ' + token,

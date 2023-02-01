@@ -16,7 +16,7 @@ self.addEventListener('install', event => {
 			.then(cache => {
 				cache.addAll([
 					//   '/',
-					'/users.pug',
+					'/index.pug',
 				])
 				// cache.add('/users', new Response(JSON.stringify(users)))
 			})

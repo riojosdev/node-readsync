@@ -1,0 +1,25 @@
+services:
+  app:
+    image: node:19-alpine
+    command: sh -c "npm install && npm run dev"
+    ports:
+      - 3000:3000
+    working_dir: /app
+    volumes:
+      - ./:/app
+    environment:
+      DEV_DB_USERNAME: postgres
+      DEV_DB_HOSTNAME: postgres_db
+      DEV_DB_NAME: sw_botnet
+      DEV_DB_PASSWORD: password
+      DEV_DB_PORT: 5432
+  postgres_db:
+    image: postgres:latest
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: postgres
+      POSTGRES_DB: sw_botnet
+volumes:
+  pgdata:

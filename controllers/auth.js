@@ -1,6 +1,8 @@
+const { Op } = require('sequelize')
 // const { v4: uuid } = require('uuid')
 const creatError = require('http-errors')
-const client = require('../utils/db')
+// const client = require('../utils/db')
+const db = require('../models')
 const webpush = require('web-push')
 const { signJwtToken } = require('../utils/jwt')
 
@@ -25,18 +27,23 @@ exports.register = async (req, res, next) => {
 		const vapidKeys = webpush.generateVAPIDKeys()
 		const data = req.body
 		// insert data to `users` table
-		const query = `
-        INSERT INTO users (fname, lname, mobile, email, publicID, privateID, dob) 
-        VALUES ('${data.fname}', '${data.lname}', '${data.mobile}', '${data.email}', '${vapidKeys.publicKey}', '${vapidKeys.privateKey}', '${data.dob}')`
+		// const query = `// INSERT INTO users (fname, lname, mobile, email, publicID, privateID, dob) // VALUES ('${data.fname}', '${data.lname}', '${data.mobile}', '${data.email}', '${vapidKeys.publicKey}', '${vapidKeys.privateKey}', '${data.dob}')`
 
-		client
-			.query(query)
-			.then(res => {
-				console.log(`✅: ${res}`)
-			})
-			.catch(err => {
-				console.error(`❌: ${err}`)
-			})
+		
+		const user = await db.User.create({ 
+			fname: data.fname, 
+			lname: data.lname,
+			mobile: data.mobile,
+			email: data.email,
+			publicID: vapidKeys.publicKey,
+			privateID: vapidKeys.privateKey,
+			dob: data.dob
+		})
+
+		// client
+		// 	.query(query)
+		// 	.then(res => {
+		console.log(`✅: ${user}`)
 		// .finally(() => {
 		//     client.end();
 		// })
@@ -49,58 +56,75 @@ exports.register = async (req, res, next) => {
 }
 
 // handles login
-exports.login = async (req, res, next) => {
+// exports.login = async (req, res, next) => {
+exports.login = async (req, res) => {
 	try {
 		const data = req.body
 		// const email = data.email
 		let token
 		// todo: verify and authenticate
-		const query = `
-            SELECT * FROM users WHERE email='${data.email}' AND lname='${data.lname}';`
+		// const query = `// SELECT * FROM users WHERE email='${data.email}' AND lname='${data.lname}';`
 		console.log({ data })
 
 		// todo: authorize and grant jwt token
 		let output
-		await client.query(query)
-			.then(async res => {
-				console.log(`✅: ${res}`)
-				const userData = res.rows[0]
-				// user = userData
-				if (!userData) throw creatError.NotFound()
-				// const { id, lname, email, publicid } = res.rows[0]
-				const { fname, lname, email, dob, privateid, publicid, mobile, id } = res.rows[0]
-				// console.log({id, lname, email, publicid})
+		db.User.findOne({
+			where: {
+				[Op.and]: [
+					{ email: data.email },
+					{ lname: data.lname }
+				]
+			}
+		}).then(async userData => {
+			console.log(`✅: ${userData}`)
 
-				if (!(id)) throw creatError.Unauthorized()
+			if (!userData) throw creatError.NotFound()
 
-				token = await tokenHandler({ id, lname, email, publicid })
+			const { fname, lname, email, dob, privateID, publicID, mobile, id } = userData
 
-				// res.send(token);\
-				const object = { fname, lname, email, dob, privateid, publicid, mobile, id, token }
-				output = { user: object, token, email }
-			})
-			.catch(err => {
-				console.error(`❌: ${err}`)
-				throw creatError.NotFound()
-			})
+			if (!(id)) throw creatError.Unauthorized()
 
-		// if (!userData) throw creatError.NotFound()
+			token = await tokenHandler({ id, lname, email, publicID })
 
-		// const { id, username, password: dbPassword } = JSON.parse(userData)
+			const object = { fname, lname, email, dob, privateID, publicID, mobile, id, token }
+			console.log({object})
+			output = { user: object, token, email }
 
-		// if (!(id && (password === dbPassword))) throw creatError.Unauthorized()
+			return output
+		}).then(output => res.json(output))
+		// await client.query(query)
+		// .then(async res => {
+		// const userData = res.rows[0]
+		// user = userData
+		// const { id, lname, email, publicid } = res.rows[0]
+		// console.log({id, lname, email, publicid})
 
-		// const token = await tokenHandler({ id, username, email })
-		// Add the token to the header
-		// const headers = {
-		//     'Authorization': 'Bearer ' + token
-		// };
-		// console.log({user: user, token, email})
-		// res.render('users', { user, email })
-		res.json(output)
-	} catch (error) {
-		next(error)
+
+
+		// res.send(token);\
+		// res.json(output)
+	} catch (err) {
+		console.error(`❌: ${err}`)
+		throw creatError.NotFound()
 	}
+
+	// if (!userData) throw creatError.NotFound()
+
+	// const { id, username, password: dbPassword } = JSON.parse(userData)
+
+	// if (!(id && (password === dbPassword))) throw creatError.Unauthorized()
+
+	// const token = await tokenHandler({ id, username, email })
+	// Add the token to the header
+	// const headers = {
+	//     'Authorization': 'Bearer ' + token
+	// };
+	// console.log({user: user, token, email})
+	// res.render('users', { user, email })
+	// res.json(output)
+	// } catch (error) {
+	// 	next(error)
+	// }
 }
 
 // exports.entry = async (req, res, next) => {

@@ -6,3 +6,5 @@ Change login to use username and password,todo,"Use bcrypt for encrypting paswor
 Use free cloud hosting,todo,render.com is one alternatives,Find heroku alternatives 
 Add documentation page,todo,Add just the generated webpage directory and host using GitHub pages,Use Rust's mdbook
 Write tests,todo,Could use puppeteer from nodejs / use Rust,Automate tests for faster development
+Change `client` variable with `sequelize` variable,doing,Integrating sequelize ORM,Use an ORM
+Use rust as the backend,todo,Need to replace and find alternatives for nodejs and npm libraries,Replace nodejs with Rust
