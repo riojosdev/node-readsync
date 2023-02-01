@@ -21,11 +21,13 @@ The service worker is the main dependency needed for push notifications to work.
 ```bash
 # To get started, clone and cd the repo:
 git clone <readsync_git_url> && cd node-readsync
-# Install all dependencies with NPM: 
-npm install
-# Start the server with:
-node app.js
+# You need to have Docker and docker-compose installed in your system
+docker compose up -d
 ```
+The application will be hosted on http://localhost:3000/
+
+
+
 ## Server Routes
 |Route|Description|
 |-|-|
@@ -42,21 +44,19 @@ node app.js
 |-|-|
 | Only a succesful Login installs a new Service Worker, which contains new notifications for the client user | If service worker couldn't be installed; no notifications would be received or pushed, a reload often works; which means the user have to successfully login with a minimum of two times, more if error persists |
 
-## Contribution Guidelines to Follow
-* Build in Public
-* MVC
-* Humane and ethical tech architecture
-* Unix Philosophy
+## Contribution
+Please check the [CONTRIBUTION.md](./CONTRIBUTION.md) file.
 
 ## FAQ
-### I added permission for the site to receive notification, but still received no notification. What did I do wrong?
+### I added permission for the site to receive notification, but still received no notification.
 Some browsers might have disabled notifications support for websites. You may need to manually enable it.
 
-Also remember, the service worker is the main dependency needed for push notifications to work. As it is still a new feature in most browsers, there might be issues.
+### I was not requested for any permissions and still not getting any notifications.
+This might be because your browser has already set the permission for the application, you need to reset the permission. Most browser have permissions resetting feature, which could be seen next to the address bar.
 
-
+> Also remember, the service worker is the main dependency needed for push notifications to work. As it is still a young feature in most browsers, there might be issues.
 ## License
-Please check the LICENSE.md file
+Please check the [LICENSE.md](./LICENSE.md) file
 
 <!-- --- -->
 ## Give Up GitHub

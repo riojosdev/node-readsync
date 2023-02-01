@@ -6,7 +6,7 @@ const { sequelize } = require('./models')
 const authRoutes = require('./routes/auth')
 const userRoutes = require('./routes/user')
 
-// Set up Global configuration access
+// Set up global configuration access
 dotenv.config()
 
 const app = express()
@@ -21,8 +21,8 @@ app.use('/', authRoutes)
 app.use('/', userRoutes)
 
 // error handling
-// app.use((err, req, res, next) => {
-app.use((err, req, res) => {
+app.use((err, req, res, next) => {
+// app.use((err, req, res) => {
 	res.status(err.status || 500).send({
 		error: {
 			status: err.status || 500,

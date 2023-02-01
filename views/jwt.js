@@ -44,8 +44,8 @@ async function login(e, forms) {
 			user_data = { publicId: user.publicID, id: user.id, privateId: user.privateID }
 
 			// TODO: render sync button which updates service worker
-			let button = document.createElement('button')
-			button.innerHTML = 'Sync New Notifications'
+			let button = document.getElementById('sync')
+			button.disabled = false
 
 			button.addEventListener('click', worker(token, user_data))
 

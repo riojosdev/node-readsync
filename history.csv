@@ -1,10 +1,10 @@
-Feature,"Status (todo, doing, done)",Comments,Description
+Feature,"Status (todo, Doing, DONE)",Comments,Description
 OpenAPI,todo,Need to learn specification,API should be usable for developers and other users
-Docker,todo,Create the docker compose for nodejs server and postgres database,Containerize the entire system with development tools
-Initialize an ORM Model for user & notification,todo,Use sequelize ORM,"Use an ORM to build & initialize a model for the tables and objects used by the database"
+Docker,DONE,Create the docker compose for nodejs server and postgres database,Containerize the entire system with development tools
+Initialize an ORM Model for user & notification,DONE,Use sequelize ORM,"Use an ORM to build & initialize a model for the tables and objects used by the database"
 Change login to use username and password,todo,"Use bcrypt for encrypting paswords,also use uuid for quering the database",Encrypt the password and store in DB
 Use free cloud hosting,todo,render.com is one alternatives,Find heroku alternatives 
 Add documentation page,todo,Add just the generated webpage directory and host using GitHub pages,Use Rust's mdbook
 Write tests,todo,Could use puppeteer from nodejs / use Rust,Automate tests for faster development
-Change `client` variable with `sequelize` variable,doing,Integrating sequelize ORM,Use an ORM
+Change `client` variable with `sequelize` variable,DONE,Integrating sequelize ORM,Use an ORM
 Use rust as the backend,todo,Need to replace and find alternatives for nodejs and npm libraries,Replace nodejs with Rust

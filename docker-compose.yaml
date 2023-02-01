@@ -1,3 +1,4 @@
+version: '3.9'
 services:
   app:
     image: node:19-alpine
@@ -6,13 +7,28 @@ services:
       - 3000:3000
     working_dir: /app
     volumes:
-      - ./:/app
+      - .:/app
+    depends_on:
+      - postgres_db
     environment:
+      # # # Development database
       DEV_DB_USERNAME: postgres
       DEV_DB_HOSTNAME: postgres_db
-      DEV_DB_NAME: sw_botnet
+      DEV_DB_NAME: sw_dev_db
       DEV_DB_PASSWORD: password
       DEV_DB_PORT: 5432
+      # # # Test database
+      CI_DB_USERNAME: postgres
+      CI_DB_HOSTNAME: postgres_db
+      CI_DB_NAME: sw_test_db
+      CI_DB_PASSWORD: password
+      CI_DB_PORT: 5432
+      # # # Production database
+      PROD_DB_USERNAME: postgres
+      PROD_DB_HOSTNAME: postgres_db
+      PROD_DB_NAME: sw_prod_db
+      PROD_DB_PASSWORD: password
+      PROD_DB_PORT: 5432
   postgres_db:
     image: postgres:latest
     volumes:
@@ -20,6 +36,6 @@ services:
     environment:
       POSTGRES_PASSWORD: password
       POSTGRES_USER: postgres
-      POSTGRES_DB: sw_botnet
+      POSTGRES_DB: sw_dev_db
 volumes:
   pgdata:
