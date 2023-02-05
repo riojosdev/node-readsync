@@ -3,7 +3,7 @@
 
 <!-- --- -->
 
-# ReadSync 🔔 v0.0.1
+# ReadSync 🔔 v0.0.1-alpha
 > "The plan is for the clients to be able to have **full freedom** to manage how they **receive** and **send** push notifications for their subscribers" - @htmldecoder
 
 Demo deployed at: https://readsync.onrender.com
