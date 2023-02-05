@@ -77,7 +77,7 @@ in the long term.  We urge you to read about the
 some of the reasons why GitHub is not a good place to host FOSS projects.
 
 If you are a contributor who personally has already quit using GitHub, please
-[check this resource](INSERT_LINK) for how to send us contributions without
+[check this resource](https://github.com/riojosdev/riojosdev/blob/main/GIVE_UP_GITHUB.md) for how to send us contributions without
 using GitHub directly.
 
 Any use of this project's code by GitHub Copilot, past or present, is done
