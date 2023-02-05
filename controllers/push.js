@@ -136,18 +136,21 @@ exports.deliverPush = async (req, res, next) => {
 			const message = payload_test[index]
 			// fetch public vapid key
 			let sender
-			const key_query = `SELECT fname FROM "Users" WHERE id=${message.sender}`
-			await db.sequelize.query(key_query)
-				.then(async res => {
-					sender = res.rows
-					console.log({ sender })
+			// const key_query = `SELECT fname FROM "Users" WHERE id=${message.sender}`
+			await db.User.findAll({
+				attributes: ['fname'],
+				where: {
+					id: message.sender
+				}
+			}).then(async res => {
+				sender = res[0]
+				console.log({ sender })
 
-					const payload = JSON.stringify({ title: JSON.stringify(sender, message.message), body: JSON.stringify(message.message) })
+				const payload = JSON.stringify({ title: sender.fname, body: message.message })
+				console.log(payload)
 
-					console.log(payload)
-
-					await webpush.sendNotification(subscription, payload).catch(err => console.error('🦀🤖✅✅: ', err))
-				})
+				await webpush.sendNotification(subscription, payload).catch(err => console.error('🦀🤖✅✅: ', err))
+			})
 
 
 		}
@@ -158,4 +161,8 @@ exports.deliverPush = async (req, res, next) => {
 	} catch (error) {
 		next(error)
 	}
+}
+
+exports.inbox = async (req, res) => {
+	res.render('inbox')
 }

@@ -24,4 +24,6 @@ router.post(
 	deliverPush
 )
 
+router.get('/inbox', )
+
 module.exports = router

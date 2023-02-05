@@ -4,8 +4,9 @@
 <!-- --- -->
 
 # ReadSync 🔔 v0.0.1
-> "The clients should be able to have **full freedom** to manage how they **receive** and **send** push notifications for their subscribers" - @htmldecoder
+> "The plan is for the clients to be able to have **full freedom** to manage how they **receive** and **send** push notifications for their subscribers" - @htmldecoder
 
+Demo deployed at: https://readsync.onrender.com
 
 ## About
 A minimalistic & lightweight notification system, built using Service Workers and NodeJS.

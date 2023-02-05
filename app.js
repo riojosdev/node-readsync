@@ -21,8 +21,10 @@ app.use('/', authRoutes)
 app.use('/', userRoutes)
 
 // error handling
+/* eslint-disable no-unused-vars */
 app.use((err, req, res, next) => {
-// app.use((err, req, res) => {
+/* eslint-enable no-unused-vars */
+	// app.use((err, req, res) => {
 	res.status(err.status || 500).send({
 		error: {
 			status: err.status || 500,
