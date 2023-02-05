@@ -57,7 +57,7 @@ This might be because your browser has already set the permission for the applic
 
 > Also remember, the service worker is the main dependency needed for push notifications to work. As it is still a young feature in most browsers, there might be issues.
 ## License
-Please check the [LICENSE.md](./LICENSE.md) file
+Please check the [LICENSE](./LICENSE) file
 
 <!-- --- -->
 ## Give Up GitHub
