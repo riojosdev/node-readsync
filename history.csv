@@ -8,3 +8,4 @@ Add documentation page,todo,Add just the generated webpage directory and host us
 Write tests,todo,Could use puppeteer from nodejs / use Rust,Automate tests for faster development
 Change `client` variable with `sequelize` variable,DONE,Integrating sequelize ORM,Use an ORM
 Use rust as the backend,todo,Need to replace and find alternatives for nodejs and npm libraries,Replace nodejs with Rust
+Create 404 error page to avoid crashing, DONE, `creatError.NotFound()` should be manipulated to display custom error status page, Error handling

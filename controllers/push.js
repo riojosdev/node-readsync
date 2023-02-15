@@ -11,7 +11,7 @@ exports.syncNotifications = async (req, res, next) => {
 		if (!email) throw creatError.Unauthorized()
 		console.log('❤️❤️❤️❤️: ', { to_id, message, email })
 
-		// 	const from_user = `
+		// const from_user = `
 		// SELECT * FROM "Users" 
 		// WHERE email='${email}';`
 		let from_user_row

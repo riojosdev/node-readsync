@@ -78,11 +78,15 @@ exports.login = async (req, res) => {
 		}).then(async userData => {
 			console.log(`✅: ${userData}`)
 
-			if (!userData) throw creatError.NotFound()
+			// if (!userData) throw creatError.NotFound()
+			if (!userData) return creatError(404, 'User does not exist...')
+			// if (!userData) return res.status(404).send({ error: 'User does not exist...'})
 
 			const { fname, lname, email, dob, privateID, publicID, mobile, id } = userData
 
-			if (!(id)) throw creatError.Unauthorized()
+			// if (!(id)) throw creatError.Unauthorized()
+			if (!(id)) return creatError(404, 'User does not exist in Server...')
+			// if (!(id)) return res.status(404).send({ error: 'User does not exist in ReadSync Server...'})
 
 			token = await tokenHandler({ id, lname, email, publicID })
 
@@ -105,7 +109,9 @@ exports.login = async (req, res) => {
 		// res.json(output)
 	} catch (err) {
 		console.error(`❌: ${err}`)
-		throw creatError.NotFound()
+		// throw creatError.NotFound()
+		return creatError(404, 'Login Failed!')
+		// return res.status(404).send({ error: 'Login Failed'})
 	}
 
 	// if (!userData) throw creatError.NotFound()
