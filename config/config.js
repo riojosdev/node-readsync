@@ -23,8 +23,9 @@ module.exports = {
 		port: process.env.CI_DB_PORT,
 		dialect: 'postgres',
 		dialectOptions: {
-			bigNumberStrings: true
-		}
+			bigNumberStrings: true,
+			ssl: true
+		},
 	},
 	production: {
 		username: process.env.PROD_DB_USERNAME,
