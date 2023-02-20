@@ -4,6 +4,7 @@ const router = express.Router()
 const { getUser } = require('../controllers/user')
 const { syncNotifications, deliverPush } = require('../controllers/push')
 const { accessTokenValidator } = require('../middlewares/auth')
+const { googleOAuth, googleSync } = require('../controllers/auth')
 
 // accessToken validator middleware
 router.post(
@@ -24,6 +25,14 @@ router.post(
 	deliverPush
 )
 
-router.get('/inbox', )
+router.get(
+	'/sync2google',
+	googleSync
+)
+	
+router.get(
+	'/google-oauth',
+	googleOAuth	
+)
 
 module.exports = router

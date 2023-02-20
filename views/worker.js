@@ -10,17 +10,17 @@ self.addEventListener('push', e => {
 		// vibrate: [200, 100, 200, 100, 200, 100, 200],
 		tag: 'sample',
 		actions: [
-			{ title: 'clickmeee', name: 'guessYouClicked', icon: 'https://upload.wikimedia.org/wikipedia/commons/4/45/Glider.svg', action: 'clicker' },
-			{ title: 'clickme2', name: 'guessYouClicked2', icon: 'https://upload.wikimedia.org/wikipedia/commons/4/45/Glider.svg', action: 'clicker2' },
+			{ title: 'Sync 2 Google', name: 'guessYouClicked', action: 'sync2google' },
+			// { title: '', name: 'guessYouClicked2', icon: 'https://upload.wikimedia.org/wikipedia/commons/4/45/Glider.svg', action: 'clicker2' },
 		]
 	})
 })
 
 self.addEventListener('notificationclick', function (event) {
 	event.notification.close()
-	if (event.action === 'clicker') {
+	if (event.action === 'sync2google') {
 		/* eslint-disable  */
-		clients.openWindow('/inbox')
+		clients.openWindow('/google-oauth')
 		/* eslint-enable  */
 		// TODO: fetch create-event endpoint on the server; which should create a new event on the calendar app in user's cloud
 	}

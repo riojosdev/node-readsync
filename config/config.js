@@ -12,7 +12,7 @@ module.exports = {
 		port: process.env.DEV_DB_PORT,
 		dialect: 'postgres',
 		dialectOptions: {
-			bigNumberStrings: true
+			bigNumberStrings: true,
 		}
 	},
 	test: {
