@@ -143,76 +143,88 @@ exports.entry = async (req, res) => {
 
 
 exports.googleOAuth = async (req, res) => {
-	const url = oauth2Client.generateAuthUrl({
-		// 'online' (default) or 'offline' (gets refresh_token)
-		access_type: 'offline',
+	try {
 
-		// If you only need one scope you can pass it as a string
-		scope: scopes
-	})
-	res.redirect(url)
+		const url = oauth2Client.generateAuthUrl({
+			// 'online' (default) or 'offline' (gets refresh_token)
+			access_type: 'offline',
+			
+			// If you only need one scope you can pass it as a string
+			scope: scopes
+		})
+		res.redirect(url)
+	} catch (err) {
+		console.log(err)
+		return creatError(404, 'Google OAuth Failed!')
+	}
 }
 
 exports.googleSync = async (req, res) => {
-	// console.log({a: req.params, b: req.query});
-	const code = req.query.code
-	const { tokens } = await oauth2Client.getToken(code)
-	console.log({ tokens })
-	oauth2Client.setCredentials(tokens)
-	const calendar = google.calendar({
-		version: 'v3',
-		auth: oauth2Client
-	})
+	try {
 
-	let eventStartTime = new Date()
-	console.log({ a: eventStartTime.getDay() })
-
-	eventStartTime.setDate(eventStartTime.getDay() + 5)
-
-	let eventEndTime = new Date()
-	eventEndTime.setDate(eventEndTime.getDay() + 5)
-	eventEndTime.setMinutes(eventEndTime.getMinutes() + 45)
-
-	const event = {
-		summary: 'Movie Night!!!',
-		location: 'Thiruvananthapuram, Kerala',
-		description: 'Grab a Popcorn, it\'s Movie Night!',
-		start: {
-			dateTime: eventStartTime,
-			timeZone: 'Asia/Kolkata',
-		},
-		end: {
-			dateTime: eventEndTime,
-			timeZone: 'Asia/Kolkata'
-		},
-		colorId: 1,
-	}
-
-	console.log({ event })
-
-
-	calendar.freebusy.query({
-		resource: {
-			timeMin: eventStartTime,
-			timeMax: eventEndTime,
-			timeZone: 'Asia/Kolkata',
-			items: [{ id: 'primary' }],
-		},
-	}, (err, res) => {
-		if (err) return console.error('Free Busy Query Error: ', err)
-
-		const eventsArr = res.data.calendars.primary.busy
-
-		if (eventsArr.length === 0) return calendar.events.insert({
-			calendarId: 'primary',
-			resource: event
-		}, err => {
-			if (err) return console.error('Calendar Event Creation Error: ', err)
-
-			return console.log('Calendar Event Created.')
+		// console.log({a: req.params, b: req.query});
+		const code = req.query.code
+		const { tokens } = await oauth2Client.getToken(code)
+		console.log({ tokens })
+		oauth2Client.setCredentials(tokens)
+		const calendar = google.calendar({
+			version: 'v3',
+			auth: oauth2Client
 		})
-		return console.log('Sorry I\'m Busy')
-	})
-	res.send('WELCOME TO GET INBOX')
-	res.render('page')
+
+		let eventStartTime = new Date()
+		console.log({ a: eventStartTime.getDay() })
+
+		eventStartTime.setDate(eventStartTime.getDay() + 5)
+
+		let eventEndTime = new Date()
+		eventEndTime.setDate(eventEndTime.getDay() + 5)
+		eventEndTime.setMinutes(eventEndTime.getMinutes() + 45)
+
+		const event = {
+			summary: 'Movie Night!!!',
+			location: 'Thiruvananthapuram, Kerala',
+			description: 'Grab a Popcorn, it\'s Movie Night!',
+			start: {
+				dateTime: eventStartTime,
+				timeZone: 'Asia/Kolkata',
+			},
+			end: {
+				dateTime: eventEndTime,
+				timeZone: 'Asia/Kolkata'
+			},
+			colorId: 1,
+		}
+
+		console.log({ event })
+
+
+		calendar.freebusy.query({
+			resource: {
+				timeMin: eventStartTime,
+				timeMax: eventEndTime,
+				timeZone: 'Asia/Kolkata',
+				items: [{ id: 'primary' }],
+			},
+		}, (err, res) => {
+			if (err) return console.error('Free Busy Query Error: ', err)
+			
+			const eventsArr = res.data.calendars.primary.busy
+
+			if (eventsArr.length === 0) return calendar.events.insert({
+				calendarId: 'primary',
+				resource: event
+			}, err => {
+				if (err) return console.error('Calendar Event Creation Error: ', err)
+
+				return console.log('Calendar Event Created.')
+			})
+			return console.log('Sorry I\'m Busy')
+		})
+		res.send('WELCOME TO GET INBOX')
+		res.render('page')
+	} catch (err) {
+		console.log(err)
+		return creatError(404, 'Google Syncronization Failed!')
+	}
 }
