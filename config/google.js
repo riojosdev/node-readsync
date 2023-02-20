@@ -6,7 +6,7 @@ dotenv.config()
 
 const CLIENT_ID = process.env.CLIENT_ID
 const CLIENT_SECRET = process.env.CLIENT_SECRET
-const REDIRECT_URL = 'http://localhost:3000/sync2google'
+const REDIRECT_URL = process.env.REDIRECT_URL
 
 const oauth2Client = new google.auth.OAuth2(
 	CLIENT_ID,
