@@ -2,9 +2,7 @@ const { google } = require('googleapis')
 const { scopes, oauth2Client } = require('../config/google')
 
 const { Op } = require('sequelize')
-// const { v4: uuid } = require('uuid')
 const creatError = require('http-errors')
-// const client = require('../utils/db')
 const db = require('../models')
 const webpush = require('web-push')
 const { signJwtToken } = require('../utils/jwt')
@@ -30,9 +28,6 @@ exports.register = async (req, res, next) => {
 		const vapidKeys = webpush.generateVAPIDKeys()
 		const data = req.body
 		// insert data to `users` table
-		// const query = `// INSERT INTO users (fname, lname, mobile, email, publicID, privateID, dob) // VALUES ('${data.fname}', '${data.lname}', '${data.mobile}', '${data.email}', '${vapidKeys.publicKey}', '${vapidKeys.privateKey}', '${data.dob}')`
-
-
 		const user = await db.User.create({
 			fname: data.fname,
 			lname: data.lname,
@@ -43,13 +38,7 @@ exports.register = async (req, res, next) => {
 			dob: data.dob
 		})
 
-		// client
-		// 	.query(query)
-		// 	.then(res => {
 		console.log(`✅: ${user}`)
-		// .finally(() => {
-		//     client.end();
-		// })
 
 		res.status(201)
 		res.send('Account created successfully')
@@ -59,19 +48,17 @@ exports.register = async (req, res, next) => {
 }
 
 // handles login
-// exports.login = async (req, res, next) => {
 exports.login = async (req, res) => {
 	try {
 		const data = req.body
-		// const email = data.email
 		let token
-		// todo: verify and authenticate
-		// const query = `// SELECT * FROM users WHERE email='${data.email}' AND lname='${data.lname}';`
+		// TODO: verify and authenticate
 		console.log({ data })
 
-		// todo: authorize and grant jwt token
+		// TODO: authorize and grant jwt token
+		// !FIXME: Change login to use only username and password
 		let output
-		db.User.findOne({
+		await db.User.findOne({
 			where: {
 				[Op.and]: [
 					{ email: data.email },
@@ -81,15 +68,11 @@ exports.login = async (req, res) => {
 		}).then(async userData => {
 			console.log(`✅: ${userData}`)
 
-			// if (!userData) throw creatError.NotFound()
 			if (!userData) return creatError(404, 'User does not exist...')
-			// if (!userData) return res.status(404).send({ error: 'User does not exist...'})
 
 			const { fname, lname, email, dob, privateID, publicID, mobile, id } = userData
 
-			// if (!(id)) throw creatError.Unauthorized()
-			if (!(id)) return creatError(404, 'User does not exist in Server...')
-			// if (!(id)) return res.status(404).send({ error: 'User does not exist in ReadSync Server...'})
+			if (!id) return creatError(404, 'User does not exist in Server...')
 
 			token = await tokenHandler({ id, lname, email, publicID })
 
@@ -99,44 +82,12 @@ exports.login = async (req, res) => {
 
 			return output
 		}).then(output => res.json(output))
-		// await client.query(query)
-		// .then(async res => {
-		// const userData = res.rows[0]
-		// user = userData
-		// const { id, lname, email, publicid } = res.rows[0]
-		// console.log({id, lname, email, publicid})
-
-
-
-		// res.send(token);\
-		// res.json(output)
 	} catch (err) {
 		console.error(`❌: ${err}`)
-		// throw creatError.NotFound()
 		return creatError(404, 'Login Failed!')
-		// return res.status(404).send({ error: 'Login Failed'})
 	}
-
-	// if (!userData) throw creatError.NotFound()
-
-	// const { id, username, password: dbPassword } = JSON.parse(userData)
-
-	// if (!(id && (password === dbPassword))) throw creatError.Unauthorized()
-
-	// const token = await tokenHandler({ id, username, email })
-	// Add the token to the header
-	// const headers = {
-	//     'Authorization': 'Bearer ' + token
-	// };
-	// console.log({user: user, token, email})
-	// res.render('users', { user, email })
-	// res.json(output)
-	// } catch (error) {
-	// 	next(error)
-	// }
 }
 
-// exports.entry = async (req, res, next) => {
 exports.entry = async (req, res) => {
 	res.render('index')
 }
@@ -148,7 +99,6 @@ exports.googleOAuth = async (req, res) => {
 		const url = oauth2Client.generateAuthUrl({
 			// 'online' (default) or 'offline' (gets refresh_token)
 			access_type: 'offline',
-			
 			// If you only need one scope you can pass it as a string
 			scope: scopes
 		})
@@ -161,8 +111,6 @@ exports.googleOAuth = async (req, res) => {
 
 exports.googleSync = async (req, res) => {
 	try {
-
-		// console.log({a: req.params, b: req.query});
 		const code = req.query.code
 		const { tokens } = await oauth2Client.getToken(code)
 		console.log({ tokens })
@@ -173,12 +121,12 @@ exports.googleSync = async (req, res) => {
 		})
 
 		let eventStartTime = new Date()
-		console.log({ a: eventStartTime.getDay() })
+		console.log({ a: eventStartTime.getDate() })
 
-		eventStartTime.setDate(eventStartTime.getDay() + 5)
+		eventStartTime.setDate(eventStartTime.getDate() + 5)
 
 		let eventEndTime = new Date()
-		eventEndTime.setDate(eventEndTime.getDay() + 5)
+		eventEndTime.setDate(eventEndTime.getDate() + 5)
 		eventEndTime.setMinutes(eventEndTime.getMinutes() + 45)
 
 		const event = {
@@ -197,7 +145,6 @@ exports.googleSync = async (req, res) => {
 		}
 
 		console.log({ event })
-
 
 		calendar.freebusy.query({
 			resource: {
@@ -221,7 +168,7 @@ exports.googleSync = async (req, res) => {
 			})
 			return console.log('Sorry I\'m Busy')
 		})
-		res.send('WELCOME TO GET INBOX')
+		res.send(`Google Calendar Event Created \n${event.summary} on ${event.start.dateTime.getDate()}`)
 		res.render('page')
 	} catch (err) {
 		console.log(err)

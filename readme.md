@@ -32,10 +32,14 @@ The application will be hosted on http://localhost:3000/
 ## Server Routes
 |Route|Description|
 |-|-|
-| `signup` | A form for registering a new user |
+| `register` | A form for registering a new user |
 | `login` | A form for logging in a registered user |
 | `notify` | A list of input form for the messages to be delivered to different users. (Currently all users present in the database is revealed) | 
-| `sync` | Syncronises new notifications from the server for the logged in user | 
+<!-- | `sync` | Syncronises new notifications from the server for the logged in user |  -->
+| `profile` ||
+| `push` ||
+| `sync2google` ||
+| `google-oauth` ||
 
 > ### Note: 
 > * The `notify` & `sync` routes will only be available after a successful login.

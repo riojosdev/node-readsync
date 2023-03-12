@@ -1,4 +1,3 @@
-// const fs = require('fs')
 const dotenv = require('dotenv')
 
 dotenv.config()
@@ -39,9 +38,7 @@ module.exports = {
 		dialect: 'postgres',
 		dialectOptions: {
 			bigNumberStrings: true,
-			// ssl: {
-			// 	ca: fs.readFileSync(__dirname + '/mysql-ca-main.crt')
-			// }
+			// !FIXME: Production needs SSL certificate
 		}
 	}
 }
