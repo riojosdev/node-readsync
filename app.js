@@ -24,7 +24,6 @@ app.use('/', userRoutes)
 /* eslint-disable no-unused-vars */
 app.use((err, req, res, next) => {
 /* eslint-enable no-unused-vars */
-	// app.use((err, req, res) => {
 	res.status(err.status || 500).send({
 		error: {
 			status: err.status || 500,
@@ -38,7 +37,6 @@ const port = process.env.PORT || 3000
 
 app.listen(port, async () => {
 	console.log(`Example app listening on port ${port}`)
-	// await connectDB()
 	sequelize.sync({ force: false }).then(() => {
 		console.log('✅: Synced database successfully...')
 	})

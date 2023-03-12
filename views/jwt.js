@@ -1,32 +1,20 @@
 /* eslint-disable no-unused-vars */
 
-// ... your code here with unused vars...
 console.log('requesting jwt header')
 
-// async function onclickJwtEmbededPostRequest(url) {
 window.onload = function startup() {
 	let form = document.getElementById('form1')
-	// form.addEventListener('submit', send(form), true)
 
 }
 async function login(e, forms) {
-
-	// let form = document.getElementById('login')
-
-	// form.addEventListener('submit', (evt) => {
 	e.preventDefault()
-	//     console.log({evt})
-	// })
-	// let data = new FormData(form)
 	let email = document.getElementById('email1').value
 	let lname = document.getElementById('lname1').value
 	let user_data
 
-	// console.log({data})
 	await fetch('/login', {
 		method: 'POST',
 		headers: {
-			// "Authorization": "JWT " + token,
 			'Accept': 'application/json',
 			'Content-Type': 'application/json'
 		},
@@ -52,7 +40,6 @@ async function login(e, forms) {
 			await fetch('/profile', {
 				method: 'POST',
 				headers: {
-					// 'Accept': 'application/json',
 					'Content-Type': 'application/json',
 					'Authorization': 'JWT ' + token,
 				},
@@ -67,39 +54,31 @@ async function login(e, forms) {
 				for (let index = 0; index < user.length; index++) {
 					const element = user[index]
 					console.log(element)
-					// const para = document.createElement('p')
-					// para.innerHTML = element.email
 					const div = document.getElementById('container')
-					// div.appendChild(para)
+					
 					// Create the form element
 					const form = document.createElement('form')
 
 					// !FIXME: hidden elements
 					// Create the fromId hidden input field
-					// const fromIdLabel = document.createElement('label');
-					// fromIdLabel.innerHTML = 'From:';
 					const fromIdInput = document.createElement('input')
 					fromIdInput.setAttribute('type', 'hidden')
 					fromIdInput.setAttribute('name', 'from_id')
 					fromIdInput.setAttribute('value', element.id)
+					
 					// Create the email hidden input field
-					// const emailLabel = document.createElement('label');
-					// emailLabel.innerHTML = 'Email:';
 					const emailInput = document.createElement('input')
 					emailInput.setAttribute('type', 'hidden')
 					emailInput.setAttribute('name', 'email')
 					emailInput.setAttribute('value', element.email)
+					
 					// Create the toId hidden input field
-					// const toIdLabel = document.createElement('label');
-					// toIdLabel.innerHTML = 'To:';
 					const toIdInput = document.createElement('input')
 					toIdInput.setAttribute('type', 'hidden')
 					toIdInput.setAttribute('name', 'to_id')
 					toIdInput.setAttribute('value', element.id)
 
 					// Create the message input field
-					// const messageLabel = document.createElement('label');
-					// messageLabel.innerHTML = 'Message:';
 					const messageInput = document.createElement('input')
 					messageInput.setAttribute('name', 'message')
 					messageInput.setAttribute('placeholder', element.email)
@@ -115,7 +94,6 @@ async function login(e, forms) {
 					form.appendChild(fromIdInput)
 					form.appendChild(emailInput)
 					form.appendChild(toIdInput)
-					// form.appendChild(messageLabel);
 					form.appendChild(messageInput)
 					form.appendChild(submitButton)
 
@@ -170,7 +148,6 @@ async function worker(token, data) {
 	console.log('Registering Push')
 	const subscription = await register.pushManager.subscribe({
 		userVisibleOnly: true,
-		// applicationServerKey: vapidKeys.publicKey 
 		applicationServerKey: publicId
 	})
 	console.log('push registered...')
@@ -186,7 +163,4 @@ async function worker(token, data) {
 		}
 	})
 	console.log('Push Sent...')
-
-	// console.log("################")
-	// send().catch(err => console.log(err))
 }
