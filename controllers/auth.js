@@ -121,12 +121,12 @@ exports.googleSync = async (req, res) => {
 		})
 
 		let eventStartTime = new Date()
-		console.log({ a: eventStartTime.getDay() })
+		console.log({ a: eventStartTime.getDate() })
 
-		eventStartTime.setDate(eventStartTime.getDay() + 5)
+		eventStartTime.setDate(eventStartTime.getDate() + 5)
 
 		let eventEndTime = new Date()
-		eventEndTime.setDate(eventEndTime.getDay() + 5)
+		eventEndTime.setDate(eventEndTime.getDate() + 5)
 		eventEndTime.setMinutes(eventEndTime.getMinutes() + 45)
 
 		const event = {
